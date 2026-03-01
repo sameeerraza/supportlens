@@ -1,6 +1,10 @@
-# SupportLens 🔍
+# SupportLens
 
 A lightweight observability platform for a customer support chatbot — built with FastAPI, Next.js, SQLite, and Google Gemini.
+
+## Live Demo
+
+- **Dashboard**: https://supportlens-ox43u3ybz-sameer-razas-projects.vercel.app
 
 ## Architecture
 
