@@ -323,7 +323,28 @@ export default function Dashboard() {
             );
           })}
 
-          <div style={{ marginLeft: "auto" }}>
+          <div style={{ marginLeft: "auto", display: "flex", gap: "8px" }}>
+            <button
+              onClick={() => {
+                const url =
+                  filter === "All"
+                    ? `${API}/export/csv`
+                    : `${API}/export/csv?category=${encodeURIComponent(filter)}`;
+                window.open(url, "_blank");
+              }}
+              style={{
+                padding: "5px 14px",
+                borderRadius: "4px",
+                fontSize: "11px",
+                fontFamily: "DM Mono, monospace",
+                cursor: "pointer",
+                border: "1px solid var(--accent)",
+                background: "rgba(108,99,255,0.1)",
+                color: "var(--accent)",
+              }}
+            >
+              ↓ Export CSV
+            </button>
             <button
               onClick={fetchData}
               style={{
