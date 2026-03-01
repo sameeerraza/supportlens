@@ -11,7 +11,7 @@ import {
   CATEGORY_BG,
 } from "./types";
 
-const API = "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 const ALL_CATEGORIES: Category[] = [
   "Billing",
   "Refund",

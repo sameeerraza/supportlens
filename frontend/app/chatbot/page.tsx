@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import CategoryBadge from "../components/CategoryBadge";
 import { Category } from "../types";
 
-const API = "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 interface Message {
   role: "user" | "assistant";
