@@ -152,6 +152,51 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
     return db_trace
 
 
+@app.get("/export/csv")
+def export_traces_csv(
+    category: Optional[str] = Query(None),
+    db: Session = Depends(get_db)
+):
+    """Export traces as CSV file"""
+    from fastapi.responses import StreamingResponse
+    import csv
+    import io
+    
+    query = db.query(Trace)
+    if category:
+        if category not in VALID_CATEGORIES:
+            raise HTTPException(status_code=400, detail=f"Invalid category. Must be one of: {VALID_CATEGORIES}")
+        query = query.filter(Trace.category == category)
+    
+    traces = query.order_by(Trace.timestamp.desc()).all()
+    
+    # Create CSV in memory
+    output = io.StringIO()
+    writer = csv.writer(output)
+    
+    # Header row
+    writer.writerow(["ID", "Timestamp", "Category", "User Message", "Bot Response", "Response Time (ms)"])
+    
+    # Data rows
+    for trace in traces:
+        writer.writerow([
+            trace.id,
+            trace.timestamp.isoformat(),
+            trace.category,
+            trace.user_message,
+            trace.bot_response,
+            trace.response_time_ms
+        ])
+    
+    output.seek(0)
+    
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=traces_export.csv"}
+    )
+
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
